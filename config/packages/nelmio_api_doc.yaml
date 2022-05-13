@@ -1,0 +1,76 @@
+nelmio_api_doc:
+    documentation:
+        paths:
+            /api/login_check:
+                post:
+                    tags:
+                        - Token
+                    operationId: postCredentialsItem
+                    summary: Get JWT token to login.
+                    requestBody:
+                        description: Create new JWT Token
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: '#/components/schemas/Credentials'
+                    responses:
+                        '200':
+                            description: Get JWT token
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Token'
+            /api/token/refresh:
+                patch:
+                    tags:
+                        - Token
+                    operationId: postRefreshTokenItem
+                    summary: Renew expired JWT token.
+                    requestBody:
+                        description: Renew new JWT Token
+                        content:
+                            application/json:
+                                schema:
+                                    $ref: '#/components/schemas/RefreshToken'
+                    responses:
+                        '200':
+                            description: Get JWT token
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Token'
+        info:
+            title: test
+            #            description: This is an awesome app!
+            version: 1.0.0
+        components:
+            schemas:
+                Token:
+                    type: object
+                    properties:
+                        token:
+                            type: string
+                            readOnly: true
+                        refreshToken:
+                            type: string
+                            readOnly: true
+                RefreshToken:
+                    type: object
+                    properties:
+                        refreshToken:
+                            type: string
+                Credentials:
+                    type: object
+                    properties:
+                        username:
+                            type: string
+                        password:
+                            type: string
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+                    bearerFormat: JWT
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/api(?!/doc$) # Accepts routes under /api except /api/doc
